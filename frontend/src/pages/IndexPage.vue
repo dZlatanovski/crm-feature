@@ -28,11 +28,18 @@
       </div>
       <div class="q-mt-md">
         <q-table
-          title="Follow-up Orders"
+          title=""
           row-key="Order ID"
           :columns="followUpOrdersColumns"
           :rows="followUpOrders"
-        />
+        >
+          <template #top>
+            <div>
+              <div class="text-h6">Follow-up Orders</div>
+              Total price of all follow-up orders: {{ totalFollowUpPrice }}$
+            </div>
+          </template>
+        </q-table>
       </div>
     </div>
   </q-page>
@@ -119,6 +126,12 @@ const selectedOrders = ref<Order[]>([]);
 const followUpOrders = ref<
   Pick<Order, 'Product Name' | 'Quantity' | 'Total Price'>[]
 >([]);
+
+const totalFollowUpPrice = computed(() => {
+  return followUpOrders.value.reduce((total, order) => {
+    return total + Number(order['Total Price']);
+  }, 0);
+});
 
 function calculateFollowUpOrders() {
   followUpOrders.value = [];
