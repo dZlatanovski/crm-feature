@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Docker/django.Dockerfile
+    volumes:
+      - ./backend/:/app
+    ports:
+      - "8001:8000"
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+  web:
+    build:
+      context: .
+      dockerfile: Docker/quasar.Dockerfile
+    volumes:
+      - ./frontend/:/app
+    ports:
+      - "8002:9000"
+    command: '/usr/bin/quasar-entrypoint.sh'
